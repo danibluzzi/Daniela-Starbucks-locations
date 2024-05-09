@@ -8,5 +8,4 @@ cython>=0.29
 scipy
 scikit-learn
 pandas
-pip uninstall numpy
-pip install --no-cache-dir numpy==1.21.2
+numpy==1.21.2
