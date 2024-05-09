@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -92,6 +91,8 @@ def first_page():
     address = get_user_address()
 
     user_coords = find_cooridnates(address)
+    if find_cooridnates(address) == (40.7128, -74.0060):
+        st.caption(":red[PLEASE ENTER A VALID ADDRESS]")
     st.write("latitude= ", find_cooridnates(address, write=False)[0], "| ", " longitude= ",
              find_cooridnates(address, write=False)[1])
     radius = st.slider("Select radius (km):", min_value=1, max_value=50,
@@ -208,3 +209,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
