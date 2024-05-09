@@ -8,4 +8,4 @@ cython>=0.29
 scipy
 scikit-learn
 pandas
-numpy==1.21.2
+numpy>=1.21.3
