@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 import matplotlib.pyplot as plt
 import pydeck as pdk
 import folium
@@ -7,7 +7,7 @@ from folium.plugins import HeatMap
 from streamlit_folium import folium_static
 import streamlit as st
 from geopy.geocoders import Nominatim
-import numpy as np
+
 
 # Load Starbucks location data
 def background_color_change(color="#3b3b3b"):
@@ -45,16 +45,18 @@ def calculate_distance(point1, point2=(
     distance = radius * c
     return distance
 
-
-def find_cooridnates(location, write=True):  # [PY2] A function that returns more than one value & [PY3] A function that
+def find_cooridnates(location, write_location=True):#[PY2] A function that returns more than one value & [PY3] A function that
     # returns a value and is called in at least two different places in your program
-    loc = Nominatim(user_agent="Geopy Library")
-    getlocation = loc.geocode(location)
-    if write:
-        st.write(f"location= {getlocation.address}")
+    try:
+        loc = Nominatim(user_agent="Geopy Library")
+        getlocation = loc.geocode(location)
+        if write_location:
+            st.write(f"location:  \n {getlocation.address}")
 
-    return getlocation.latitude, getlocation.longitude
 
+        return getlocation.latitude,getlocation.longitude
+    except:
+        return 40.712, -74.0060
 
 def get_user_address():
     address = st.text_input("Enter your current address:")
@@ -87,16 +89,6 @@ def generate_heatmap(data):
     st.subheader("Starbucks Store Density Heatmap")
     st.components.v1.html(m._repr_html_(), width=800, height=600)
 
-def first_page():
-    address = get_user_address()
-
-    user_coords = find_cooridnates(address)
-    if find_cooridnates(address) == (40.7128, -74.0060):
-        st.caption(":red[PLEASE ENTER A VALID ADDRESS]")
-    st.write("latitude= ", find_cooridnates(address, write=False)[0], "| ", " longitude= ",
-             find_cooridnates(address, write=False)[1])
-    radius = st.slider("Select radius (km):", min_value=1, max_value=50,
-                       value=5)  # [ST2] At least three Streamlit different widgets (sliders)
 
 def visualize_data(nearby_stores):
     # Bar Chart: Number of Starbucks stores by country
@@ -115,8 +107,10 @@ def first_page():
     address = get_user_address()
 
     user_coords = find_cooridnates(address)
-    st.write("latitude= ", find_cooridnates(address, write=False)[0], "| ", " longitude= ",
-             find_cooridnates(address, write=False)[1])
+    if find_cooridnates(address, write_location=False) == (40.712, -74.0060):
+        st.caption(":red[PLEASE ENTER A VALID ADDRESS]")
+    st.write("latitude= ", find_cooridnates(address, write_location=False)[0], "| ", " longitude= ",
+             find_cooridnates(address, write_location=False)[1])
     radius = st.slider("Select radius (km):", min_value=1, max_value=50,
                        value=5)  # [ST2] At least three Streamlit different widgets (sliders)
 
