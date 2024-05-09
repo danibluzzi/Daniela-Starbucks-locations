@@ -3,7 +3,7 @@ matplotlib
 pydeck
 folium
 streamlit
-streamlit-folium
+streamlit_folium
 geopy
 cython
 scipy
